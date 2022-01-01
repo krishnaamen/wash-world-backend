@@ -16,8 +16,4 @@ export class CreateVehicleDto {
 
   @IsString()
   year: string;
-
-  user: User;
-
-  washplan: Washplan;
 }

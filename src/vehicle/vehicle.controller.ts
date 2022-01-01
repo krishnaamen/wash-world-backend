@@ -22,8 +22,12 @@ export class VehicleController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  async create(@Request() req, @Body() createVehicleDto: CreateVehicleDto) {
-    console.log(req.user);
+  create(@Request() req) {
+    console.log('hit3', req.body);
+    console.log('hit4', req.user);
+    const { licencePlateNumber, model, color, year } = req.body;
+
+    console.log('vehicle controller user in request', req.user);
     const token = req.headers.authorization.split(' ')[1];
     console.log(token);
     const decoded = jwt.verify(token, 'secret') as jwt.JwtPayload; // Cast decoded to JwtPayload type
@@ -31,9 +35,14 @@ export class VehicleController {
     const user = new User();
     user.id = Number(decoded.id);
     user.username = decoded.username;
-    createVehicleDto.user = user;
-    console.log(createVehicleDto);
-
+    //createVehicleDto.user = user;
+    const createVehicleDto = {
+      licencePlateNumber,
+      model,
+      color,
+      year,
+      user,
+    } as unknown as CreateVehicleDto;
     return this.vehicleService.create(createVehicleDto);
   }
 
