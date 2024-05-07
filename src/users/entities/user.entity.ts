@@ -1,12 +1,7 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  OneToMany,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Role } from '../role.enum';
+import { Vehicle } from 'src/vehicle/entities/vehicle.entity';
 
 @Entity()
 export class User {
@@ -31,6 +26,8 @@ export class User {
     default: [Role.User],
   })
   role: Role;
+  @OneToMany(() => Vehicle, (vehicle) => vehicle.user)
+  vehicles: Vehicle[];
 
   async validatePassword(password: string): Promise<boolean> {
     return bcrypt.compare(password, this.password);
