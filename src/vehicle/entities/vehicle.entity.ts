@@ -5,6 +5,7 @@ import {
   Column,
   ManyToOne,
   OneToOne,
+  JoinColumn,
 } from 'typeorm';
 import { Washplan } from 'src/washplan/entities/washplan.entity';
 
@@ -15,8 +16,18 @@ export class Vehicle {
   @Column()
   licencePlateNumber: string;
 
-  @OneToOne(() => Washplan, { nullable: true })
-  washplan: Washplan;
+  @Column()
+  model: string;
+
+  @Column()
+  color: string;
+
+  @Column()
+  year: number;
+
+  @OneToOne(() => Washplan, { cascade: true })
+  @JoinColumn()
+  washplan: Washplan | null;
 
   @ManyToOne(() => User, (user) => user.vehicles)
   user: User;
