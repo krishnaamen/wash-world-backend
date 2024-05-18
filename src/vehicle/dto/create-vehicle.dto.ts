@@ -1,4 +1,6 @@
 import { IsNumber, IsString } from 'class-validator';
+import { User } from '../../users/entities/user.entity';
+import { Washplan } from '../../washplan/entities/washplan.entity';
 
 export class CreateVehicleDto {
   @IsNumber()
@@ -14,4 +16,8 @@ export class CreateVehicleDto {
 
   @IsString()
   year: string;
+
+  user: User;
+
+  washplan: Washplan;
 }
