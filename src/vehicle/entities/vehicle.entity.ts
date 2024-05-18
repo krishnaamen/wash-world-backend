@@ -23,7 +23,7 @@ export class Vehicle {
   color: string;
 
   @Column()
-  year: number;
+  year: string;
 
   @OneToOne(() => Washplan, { cascade: true })
   @JoinColumn()

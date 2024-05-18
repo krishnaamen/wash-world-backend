@@ -30,10 +30,10 @@ export class VehicleController {
     return this.vehicleService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateVehicleDto: UpdateVehicleDto) {
-    return this.vehicleService.update(+id, updateVehicleDto);
-  }
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updateVehicleDto: UpdateVehicleDto) {
+  //   return this.vehicleService.update(+id, updateVehicleDto);
+  // }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
