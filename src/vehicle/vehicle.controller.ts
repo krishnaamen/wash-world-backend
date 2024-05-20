@@ -3,28 +3,25 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Request,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { VehicleService } from './vehicle.service';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
-import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 import * as jwt from 'jsonwebtoken';
-import { ConfigService } from '@nestjs/config';
-import { UsersService } from 'src/users/users.service';
 import { User } from 'src/users/entities/user.entity';
-
+import { JwtAuthGuard } from 'src/auth/auth.guard';
 @Controller('vehicle')
 export class VehicleController {
-  constructor(
-    private readonly vehicleService: VehicleService,
-    //private readonly usersService: UsersService,
-  ) {}
+  constructor(private readonly vehicleService: VehicleService) {}
 
+
+  @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Request() req, @Body() createVehicleDto: CreateVehicleDto) {
+  async create(@Request() req, @Body() createVehicleDto: CreateVehicleDto) {
+    console.log(req.user);
     const token = req.headers.authorization.split(' ')[1];
     console.log(token);
     const decoded = jwt.verify(token, 'secret') as jwt.JwtPayload; // Cast decoded to JwtPayload type
@@ -35,8 +32,17 @@ export class VehicleController {
     createVehicleDto.user = user;
     console.log(createVehicleDto);
 
-
     return this.vehicleService.create(createVehicleDto);
+  }
+  @UseGuards(JwtAuthGuard)
+  @Post('test')
+  async Test(@Request() req) {
+    const user = req.user;
+    console.log('User from guard', user);
+    //createVehicleDto.user = user;
+    console.log(req.headers.authorization);
+
+    //return this.vehicleService.create(createVehicleDto);
   }
 
   @Get()

@@ -8,10 +8,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private usersService: UsersService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      ignoreExpiration: false,
+      ignoreExpiration: true,
       // Not the best practice, we should ideally have this coming as an
       // environment variable and outside of Git.
-      secretOrKey: process,
+      secretOrKey: 'secret',
     });
   }
 

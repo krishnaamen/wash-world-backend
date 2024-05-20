@@ -4,12 +4,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Vehicle } from './entities/vehicle.entity';
 import { Repository } from 'typeorm';
 //import { UpdateVehicleDto } from './dto/update-vehicle.dto';
-
+import { HttpService } from '@nestjs/axios';
 @Injectable()
 export class VehicleService {
   constructor(
     @InjectRepository(Vehicle)
     private userRepository: Repository<Vehicle>,
+    private httpService: HttpService,
   ) {}
 
   create(createVehicleDto: CreateVehicleDto) {

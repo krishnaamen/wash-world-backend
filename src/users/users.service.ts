@@ -5,6 +5,7 @@ import { RegisterUserDto } from './dto/register-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { Role } from './role.enum';
+import { Vehicle } from 'src/vehicle/entities/vehicle.entity';
 
 @Injectable()
 export class UsersService {
@@ -15,7 +16,7 @@ export class UsersService {
 
   async upgrade(userId: number) {
     const user = await this.findOne(userId); // Finding the user by the userId
-    user.role = Role.PremiumUser; // Changing the role in memory. 
+    user.role = Role.PremiumUser; // Changing the role in memory.
     return this.userRepository.save(user); // Saving the updated user obj. into database
   }
 
@@ -28,7 +29,6 @@ export class UsersService {
     console.log('salt is there', salt);
     console.log('password is there', password);
 
-    
     const hashedPassword = await bcrypt.hash(password, salt);
     console.log('hashedPassword is there  ', hashedPassword);
 
