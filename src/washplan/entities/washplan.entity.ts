@@ -8,11 +8,6 @@ export class Washplan {
   washplanName: string;
   @Column()
   washplanPrice: number;
-  @Column()
-  validuntil: Date;
-  @Column()
-  active: boolean;
-
   @OneToOne(() => Vehicle, (vehicle) => vehicle.washplan)
   vehicle: Vehicle;
 }

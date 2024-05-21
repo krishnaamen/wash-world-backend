@@ -7,12 +7,14 @@ import {
   Request,
   Delete,
   UseGuards,
+  Patch,
 } from '@nestjs/common';
 import { VehicleService } from './vehicle.service';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import * as jwt from 'jsonwebtoken';
 import { User } from 'src/users/entities/user.entity';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
+import { jwtConstants } from 'src/auth/constants';
 @Controller('vehicle')
 export class VehicleController {
   constructor(private readonly vehicleService: VehicleService) {}
@@ -42,23 +44,23 @@ export class VehicleController {
     //createVehicleDto.user = user;
     console.log(req.headers.authorization);
 
-    //return this.vehicleService.create(createVehicleDto);
+    return user;
   }
-
+  @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.vehicleService.findAll();
+  findAll(@Request() req) {
+    return this.vehicleService.findAll(req.user);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.vehicleService.findOne(+id);
-  }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateVehicleDto: UpdateVehicleDto) {
-  //   return this.vehicleService.update(+id, updateVehicleDto);
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.vehicleService.findOne(+id);
   // }
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() createVehicleDto: CreateVehicleDto) {
+    return this.vehicleService.update(+id, createVehicleDto);
+  }
 
   @Delete(':id')
   remove(@Param('id') id: string) {

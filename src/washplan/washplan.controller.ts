@@ -6,7 +6,9 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { WashplanService } from './washplan.service';
 import { CreateWashplanDto } from './dto/create-washplan.dto';
 import { UpdateWashplanDto } from './dto/update-washplan.dto';
@@ -19,7 +21,7 @@ export class WashplanController {
   create(@Body() createWashplanDto: CreateWashplanDto) {
     return this.washplanService.create(createWashplanDto);
   }
-
+  // @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.washplanService.findAll();
