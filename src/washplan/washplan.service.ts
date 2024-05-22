@@ -12,7 +12,7 @@ export class WashplanService {
     @InjectRepository(Washplan)
     private readonly washplanRepository: Repository<Washplan>,
     private readonly httpService: HttpService,
-  ) {}
+  ) { }
   create(createWashplanDto: CreateWashplanDto) {
     return 'This action adds a new washplan';
   }
