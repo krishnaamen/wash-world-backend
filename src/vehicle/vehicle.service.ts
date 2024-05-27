@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Vehicle } from './entities/vehicle.entity';
@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 //import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 import { HttpService } from '@nestjs/axios';
 import { User } from 'src/users/entities/user.entity';
+import { Washplan } from 'src/washplan/entities/washplan.entity';
 @Injectable()
 export class VehicleService {
   constructor(
@@ -24,12 +25,24 @@ export class VehicleService {
     });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} vehicle`;
+  async getWashPlanByVehicleId(vehicleId: number): Promise<Washplan> {
+    const vehicle = await this.userRepository.findOne({
+      where: { id: vehicleId },
+      relations: ['washplan'],
+    });
+
+    if (!vehicle) {
+      throw new NotFoundException('Vehicle not found');
+    }
+    console.log('vehicle.washplan service', vehicle.washplan);
+    return vehicle.washplan;
   }
 
   async update(id: number, createVehicleDto: CreateVehicleDto) {
-    return await this.userRepository.update(id, createVehicleDto);
+    console.log('update service dto ', createVehicleDto);
+    const response = await this.userRepository.update(id, createVehicleDto);
+    console.log('update service response ', response);
+    return response;
   }
 
   remove(id: number) {

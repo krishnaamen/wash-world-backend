@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Patch,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { VehicleService } from './vehicle.service';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
@@ -15,10 +16,10 @@ import * as jwt from 'jsonwebtoken';
 import { User } from 'src/users/entities/user.entity';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { jwtConstants } from 'src/auth/constants';
+import { Washplan } from 'src/washplan/entities/washplan.entity';
 @Controller('vehicle')
 export class VehicleController {
   constructor(private readonly vehicleService: VehicleService) {}
-
 
   @UseGuards(JwtAuthGuard)
   @Post()
@@ -52,13 +53,30 @@ export class VehicleController {
     return this.vehicleService.findAll(req.user);
   }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.vehicleService.findOne(+id);
-  // }
+  @UseGuards(JwtAuthGuard)
+  @Get(':id')
+  async getWashPlan(@Request() req, @Param('id', ParseIntPipe) id: number) {
+    //console.log('req.body', req);
+    //console.log('id from controller', id);
+
+    const washplan = await this.vehicleService.getWashPlanByVehicleId(id);
+    //console.log('washpaln from controller', washplan);
+    return washplan;
+  }
+
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() createVehicleDto: CreateVehicleDto) {
+  update(
+    @Param('id') id: string,
+    @Request() req,
+    @Body() createVehicleDto: CreateVehicleDto,
+  ) {
+    console.log(
+      'createVehicleDto,user,token',
+      createVehicleDto,
+      req.user,
+      req.headers.authorization,
+    );
     return this.vehicleService.update(+id, createVehicleDto);
   }
 
