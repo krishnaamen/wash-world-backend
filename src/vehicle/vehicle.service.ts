@@ -5,8 +5,8 @@ import { Vehicle } from './entities/vehicle.entity';
 import { Repository } from 'typeorm';
 //import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 import { HttpService } from '@nestjs/axios';
-import { User } from 'src/users/entities/user.entity';
-import { Washplan } from 'src/washplan/entities/washplan.entity';
+import { User } from '../users/entities/user.entity';
+import { Washplan } from '../washplan/entities/washplan.entity';
 @Injectable()
 export class VehicleService {
   constructor(

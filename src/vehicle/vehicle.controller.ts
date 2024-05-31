@@ -13,10 +13,9 @@ import {
 import { VehicleService } from './vehicle.service';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import * as jwt from 'jsonwebtoken';
-import { User } from 'src/users/entities/user.entity';
-import { JwtAuthGuard } from 'src/auth/auth.guard';
-import { jwtConstants } from 'src/auth/constants';
-import { Washplan } from 'src/washplan/entities/washplan.entity';
+import { User } from '../users/entities/user.entity';
+import { JwtAuthGuard } from '../auth/auth.guard';
+import { Washplan } from '../washplan/entities/washplan.entity';
 @Controller('vehicle')
 export class VehicleController {
   constructor(private readonly vehicleService: VehicleService) {}
@@ -37,16 +36,7 @@ export class VehicleController {
 
     return this.vehicleService.create(createVehicleDto);
   }
-  @UseGuards(JwtAuthGuard)
-  @Post('test')
-  async Test(@Request() req) {
-    const user = req.user;
-    console.log('User from guard', user);
-    //createVehicleDto.user = user;
-    console.log(req.headers.authorization);
 
-    return user;
-  }
   @UseGuards(JwtAuthGuard)
   @Get()
   findAll(@Request() req) {

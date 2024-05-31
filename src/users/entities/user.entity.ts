@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Role } from '../role.enum';
-import { Vehicle } from 'src/vehicle/entities/vehicle.entity';
+import { Vehicle } from '../../vehicle/entities/vehicle.entity';
 
 @Entity()
 export class User {

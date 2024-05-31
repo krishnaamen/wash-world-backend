@@ -10,5 +10,6 @@ import { HttpModule } from '@nestjs/axios';
   imports: [HttpModule, AuthModule, TypeOrmModule.forFeature([Vehicle])],
   controllers: [VehicleController],
   providers: [VehicleService],
+  exports: [VehicleService],
 })
 export class VehicleModule {}

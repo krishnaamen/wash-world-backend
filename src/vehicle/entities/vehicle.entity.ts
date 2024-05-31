@@ -1,4 +1,4 @@
-import { User } from 'src/users/entities/user.entity';
+import { User } from '../../users/entities/user.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -7,7 +7,7 @@ import {
   OneToOne,
   JoinColumn,
 } from 'typeorm';
-import { Washplan } from 'src/washplan/entities/washplan.entity';
+import { Washplan } from '../../washplan/entities/washplan.entity';
 
 @Entity()
 export class Vehicle {
