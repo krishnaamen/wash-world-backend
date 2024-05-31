@@ -2,12 +2,15 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
+import { UsersModule } from 'src/users/users.module';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { DeleteResult, UpdateResult } from 'typeorm';
 import { Connection, Repository } from 'typeorm';
 import { User } from '../src/users/entities/user.entity';
 import { UsersService } from '../src/users/users.service';
 import { AuthService } from '../src/auth/auth.service';
 import { log } from 'console';
+import { UsersModule } from 'src/users/users.module';
 
 describe('ProblemController (e2e)', () => {
   let app: INestApplication;
@@ -20,7 +23,7 @@ describe('ProblemController (e2e)', () => {
 
   beforeEach(async () => {
     moduleFixture = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [AppModule, UsersModule],
     }).compile();
 
     usersService = moduleFixture.get(UsersService);

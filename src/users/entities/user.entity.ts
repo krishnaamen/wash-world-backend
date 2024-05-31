@@ -20,6 +20,8 @@ export class User {
   @Column()
   password: string;
 
+  @Column({ default: `71879245` })
+  phoneNumber: string;
   @Column({
     type: 'enum',
     enum: Role,
