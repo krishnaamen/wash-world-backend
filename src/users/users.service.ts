@@ -9,6 +9,9 @@ import { Vehicle } from 'src/vehicle/entities/vehicle.entity';
 
 @Injectable()
 export class UsersService {
+  findAll() {
+    throw new Error('Method not implemented.');
+  }
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
