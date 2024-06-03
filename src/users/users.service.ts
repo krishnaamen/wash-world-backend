@@ -44,8 +44,10 @@ export class UsersService {
     user.password = hashedPassword;
     user.role = Role.User;
 
-    console.log('user from user service', user);
-    return this.userRepository.save(user);
+    console.log('user from user service check1', user);
+    const result = this.userRepository.save(user);
+    console.log('result from user service check2', result);
+    return result;
   }
 
   async findOne(id: number): Promise<User> {

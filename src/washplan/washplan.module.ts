@@ -3,7 +3,7 @@ import { WashplanService } from './washplan.service';
 import { WashplanController } from './washplan.controller';
 import { Washplan } from './entities/washplan.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from 'src/auth/auth.module';
+import { AuthModule } from '../auth/auth.module';
 import { HttpModule } from '@nestjs/axios';
 
 @Module({
