@@ -7,8 +7,8 @@ export class RegisterUserDto {
   @IsString()
   lastName: string;
 
-  @IsDate()
-  birthDate: Date;
+  @IsString()
+  birthDate: string;
 
   @IsEmail()
   email: string;

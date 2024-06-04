@@ -15,7 +15,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-  ) {}
+  ) { }
 
   async upgrade(userId: number) {
     const user = await this.findOne(userId); // Finding the user by the userId

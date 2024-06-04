@@ -75,6 +75,7 @@ describe('AuthController (e2e)', () => {
         password: 'kri123',
       };
       const registerUser = await usersService.create(registerUserDto);
+      console.log('registerUser', registerUser);
 
       const login = { email: 'krishnaamen@gmail.com', password: 'kri123' };
       // Act

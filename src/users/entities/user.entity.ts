@@ -12,16 +12,13 @@ export class User {
   @Column()
   lastName: string;
   @Column()
-  birthDate: Date;
+  birthDate: string;
   @Column()
   email: string;
   @Column()
   username: string;
   @Column()
   password: string;
-
-  @Column({ default: `71879245` })
-  phoneNumber: string;
   @Column({
     type: 'enum',
     enum: Role,

@@ -14,15 +14,12 @@ export class CreateUserDto {
   @IsString()
   lastName: string;
 
-  @IsDate()
-  birthDate: Date;
+  @IsString()
+  birthDate: string;
 
   @IsEmail()
   email: string;
 
   @IsNotEmpty()
   password: string;
-
-  @IsPhoneNumber()
-  phoneNumber: string;
 }
