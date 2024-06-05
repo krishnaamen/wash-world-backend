@@ -1,41 +1,39 @@
+// test/auth.e2e-spec.ts
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { Connection, Repository } from 'typeorm';
-import { User } from '../src/users/entities/user.entity';
 import { UsersService } from '../src/users/users.service';
 import { AuthService } from '../src/auth/auth.service';
 import { VehicleService } from '../src/vehicle/vehicle.service';
 import { RegisterUserDto } from '../src/users/dto/register-user.dto';
-import { Vehicle } from '../src/vehicle/entities/vehicle.entity';
+import {
+  mockRepositories,
+  userRepositoryToken,
+  vehicleRepositoryToken,
+} from './mock-repository';
 
 describe('AuthController (e2e)', () => {
   let app: INestApplication;
   let moduleFixture: TestingModule;
-  let usersRepository: Repository<User>;
-  let vehicleRepository: Repository<Vehicle>;
   let usersService: UsersService;
   let authService: AuthService;
   let vehicleService: VehicleService;
-  let connection: Connection;
 
   beforeEach(async () => {
     moduleFixture = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    })
+      .overrideProvider(userRepositoryToken)
+      .useValue(mockRepositories[userRepositoryToken.toString()])
+      .overrideProvider(vehicleRepositoryToken)
+      .useValue(mockRepositories[vehicleRepositoryToken.toString()]) // Fix: Change index type from Function to string
+      .compile();
 
     usersService = moduleFixture.get(UsersService);
     authService = moduleFixture.get(AuthService);
     vehicleService = moduleFixture.get(VehicleService);
-    usersRepository = moduleFixture.get(getRepositoryToken(User));
-    vehicleRepository = moduleFixture.get(getRepositoryToken(Vehicle));
 
-    await usersRepository.query('DELETE FROM "user"');
-    await vehicleRepository.query('DELETE FROM "vehicle"');
-
-    connection = moduleFixture.get(Connection);
     app = moduleFixture.createNestApplication();
     await app.init();
   });
@@ -45,11 +43,16 @@ describe('AuthController (e2e)', () => {
       const registerUserDto: RegisterUserDto = {
         firstName: 'Krishna',
         lastName: 'Khanal',
-        birthDate: new Date('1999-12-12'),
+        birthDate: '1999-12-12',
         email: 'krishnaamen@gmail.com',
         username: 'krishnaamen',
         password: 'kri123',
       };
+
+      const mockUser = { ...registerUserDto, id: 1, role: 'user' };
+      (
+        mockRepositories[userRepositoryToken.toString()].save as jest.Mock
+      ).mockResolvedValue(mockUser);
 
       const { body } = await request(app.getHttpServer())
         .post('/auth/sign-up')
@@ -69,13 +72,20 @@ describe('AuthController (e2e)', () => {
       const registerUserDto: RegisterUserDto = {
         firstName: 'Krishna',
         lastName: 'Khanal',
-        birthDate: new Date('1999-12-12'),
+        birthDate: '1999-12-12',
         email: 'krishnaamen@gmail.com',
         username: 'krishnaamen',
         password: 'kri123',
       };
-      const registerUser = await usersService.create(registerUserDto);
-      console.log('registerUser', registerUser);
+      const mockUser = {
+        ...registerUserDto,
+        id: 1,
+        role: 'user',
+        validatePassword: jest.fn().mockResolvedValue(true),
+      };
+      (
+        mockRepositories[userRepositoryToken.toString()].findOne as jest.Mock
+      ).mockResolvedValue(mockUser);
 
       const login = { email: 'krishnaamen@gmail.com', password: 'kri123' };
       // Act
@@ -89,7 +99,6 @@ describe('AuthController (e2e)', () => {
   });
 
   afterAll(async () => {
-    await connection.close();
     await app.close();
   });
 });

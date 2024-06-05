@@ -55,11 +55,7 @@ export class VehicleController {
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   async getWashPlan(@Request() req, @Param('id', ParseIntPipe) id: number) {
-    //console.log('req.body', req);
-    //console.log('id from controller', id);
-
     const washplan = await this.vehicleService.getWashPlanByVehicleId(id);
-    //console.log('washpaln from controller', washplan);
     return washplan;
   }
 
